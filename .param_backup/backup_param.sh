@@ -242,10 +242,10 @@ do_backup() {
     if [[ -n "$(git status --porcelain)" ]]; then
       git add -A
       local commit_msg="auto backup $(date '+%Y-%m-%d %H:%M:%S')"
-      git commit -m "$commit_msg"
+      git commit -m "$commit_msg" --quiet
       committed=true
       commit_hash="$(git rev-parse --short HEAD)"
-      commit_summary="$(git show --stat --format='%s' -1 HEAD | tail -n +2 | head -5)"
+      commit_summary="$(git show --stat --format='%s' -1 HEAD 2>/dev/null | tail -n +2 | head -5)"
       run_summary="new commit created"
       log "COMMIT: $commit_hash $commit_msg"
 
