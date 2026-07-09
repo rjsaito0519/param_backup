@@ -75,16 +75,7 @@ ensure_dest_gitignore() {
   if [[ ! -f "$PARAM_BACKUP_DEST/.gitignore" ]]; then
     cp "$GITIGNORE_TEMPLATE" "$PARAM_BACKUP_DEST/.gitignore"
     log "INIT: installed $PARAM_BACKUP_DEST/.gitignore"
-    return
   fi
-
-  while IFS= read -r line || [[ -n "$line" ]]; do
-    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-    if ! grep -qxF "$line" "$PARAM_BACKUP_DEST/.gitignore"; then
-      echo "$line" >>"$PARAM_BACKUP_DEST/.gitignore"
-      log "INIT: appended to .gitignore: $line"
-    fi
-  done <"$GITIGNORE_TEMPLATE"
 }
 
 init_dest_repo() {
