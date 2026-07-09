@@ -5,9 +5,10 @@
 #   1. chmod +x param/.param_backup/*.sh param/.param_backup/discord_status.py
 #   2. Edit config.env if paths differ
 #   3. Put Discord webhook URL in .discord_webhook (one line, optional)
-#   4. Run manually: param/.param_backup/backup_param.sh
-#   5. Enable cron: param/.param_backup/cron_start.sh
-#   6. Check status: param/.param_backup/cron_monitor.sh
+#   4. Run prepare.sh to stop cron / clear lock on this host
+#   5. Run manually: param/.param_backup/backup_param.sh
+#   6. Enable cron on ONE host only: param/.param_backup/cron_start.sh
+#   7. Check status: param/.param_backup/cron_monitor.sh
 
 set -euo pipefail
 
@@ -27,7 +28,8 @@ PARAM_SRC_BRANCH="${PARAM_SRC_BRANCH:-e72}"
 STATE_DIR="${STATE_DIR:-$HOME/.config/e72-param-backup}"
 LOG_FILE="${LOG_FILE:-$STATE_DIR/backup.log}"
 LOCK_FILE="${LOCK_FILE:-$STATE_DIR/backup.lock}"
-DISCORD_WEBHOOK_FILE="${DISCORD_WEBHOOK_FILE:-$SCRIPT_DIR/.discord_webhook}"
+DISCORD_WEBHOOK_FILE="${DISCORD_WEBHOOK_FILE:-$PARAM_SRC/.param_backup/.discord_webhook}"
+BACKUP_SCRIPT="${BACKUP_SCRIPT:-$SCRIPT_DIR/backup_param.sh}"
 DISCORD_SYNC_MSG_ID_FILE="${DISCORD_SYNC_MSG_ID_FILE:-$STATE_DIR/discord_sync_message_id}"
 DISCORD_COMMIT_MSG_ID_FILE="${DISCORD_COMMIT_MSG_ID_FILE:-$STATE_DIR/discord_commit_message_id}"
 GITIGNORE_TEMPLATE="${GITIGNORE_TEMPLATE:-$SCRIPT_DIR/backup.gitignore}"
@@ -286,11 +288,12 @@ do_backup() {
 }
 
 run_with_lock() {
-  exec 9>"$LOCK_FILE"
+  exec 9>>"$LOCK_FILE"
   if ! flock -n 9; then
-    log "SKIP: another backup is already running"
+    log "SKIP: another backup is already running on some host (lock=$LOCK_FILE)"
     exit 0
   fi
+  log "LOCK: acquired on $(hostname)"
   do_backup
 }
 

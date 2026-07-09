@@ -11,22 +11,19 @@ if [[ -f "$CONFIG_FILE" ]]; then
   source "$CONFIG_FILE"
 fi
 
-STATE_DIR="${STATE_DIR:-$HOME/.config/e72-param-backup}"
-LOCK_FILE="${LOCK_FILE:-$STATE_DIR/backup.lock}"
-BACKUP_SCRIPT="$SCRIPT_DIR/backup_param.sh"
+BACKUP_SCRIPT="${BACKUP_SCRIPT:-$SCRIPT_DIR/backup_param.sh}"
 MARKER="# e72-param-backup"
-CRON_LINE="0 * * * * flock -n $LOCK_FILE $BACKUP_SCRIPT $MARKER"
-
-mkdir -p "$STATE_DIR"
+# flock is handled inside backup_param.sh (do not wrap here)
+CRON_LINE="0 * * * * $BACKUP_SCRIPT $MARKER"
 
 if ! crontab -l 2>/dev/null | grep -Fq "$MARKER"; then
   (
     crontab -l 2>/dev/null || true
     echo "$CRON_LINE"
   ) | crontab -
-  echo "cron registered: $CRON_LINE"
+  echo "cron registered on $(hostname): $CRON_LINE"
 else
-  echo "cron already registered"
+  echo "cron already registered on $(hostname)"
 fi
 
 crontab -l | grep -F "$MARKER" || true

@@ -19,21 +19,24 @@ PARAM_SRC_BRANCH="${PARAM_SRC_BRANCH:-e72}"
 STATE_DIR="${STATE_DIR:-$HOME/.config/e72-param-backup}"
 LOG_FILE="${LOG_FILE:-$STATE_DIR/backup.log}"
 LOCK_FILE="${LOCK_FILE:-$STATE_DIR/backup.lock}"
-DISCORD_WEBHOOK_FILE="${DISCORD_WEBHOOK_FILE:-$SCRIPT_DIR/.discord_webhook}"
+BACKUP_SCRIPT="${BACKUP_SCRIPT:-$PARAM_SRC/.param_backup/backup_param.sh}"
+DISCORD_WEBHOOK_FILE="${DISCORD_WEBHOOK_FILE:-$PARAM_SRC/.param_backup/.discord_webhook}"
 MARKER="# e72-param-backup"
 
 echo "=== e72 param backup monitor ==="
+echo "host: $(hostname)"
 echo
 
 echo "[cron]"
 if crontab -l 2>/dev/null | grep -F "$MARKER"; then
-  echo "status: registered"
+  echo "status: registered on $(hostname)"
 else
-  echo "status: NOT registered"
+  echo "status: NOT registered on $(hostname)"
 fi
 echo
 
 echo "[config]"
+echo "BACKUP_SCRIPT=$BACKUP_SCRIPT"
 echo "PARAM_SRC=$PARAM_SRC"
 echo "PARAM_BACKUP_DEST=$PARAM_BACKUP_DEST"
 echo "GITHUB_REMOTE=$GITHUB_REMOTE"
@@ -53,21 +56,20 @@ echo
 
 echo "[discord webhook]"
 if grep -v '^[[:space:]]*#' "$DISCORD_WEBHOOK_FILE" 2>/dev/null | grep -qv '^[[:space:]]*$'; then
-  echo "status: configured"
+  echo "status: configured ($DISCORD_WEBHOOK_FILE)"
 else
   echo "status: NOT configured ($DISCORD_WEBHOOK_FILE)"
 fi
 echo
 
 echo "[lock]"
-if [[ -f "$LOCK_FILE" ]]; then
-  if command -v fuser >/dev/null 2>&1 && fuser "$LOCK_FILE" >/dev/null 2>&1; then
-    echo "status: backup appears to be running"
-  else
-    echo "status: idle (lock file exists)"
-  fi
-else
+if [[ ! -f "$LOCK_FILE" ]]; then
   echo "status: idle (no lock file)"
+elif flock -n "$LOCK_FILE" true 2>/dev/null; then
+  echo "status: idle (lock not held)"
+else
+  echo "status: LOCKED (backup running on some host)"
+  echo "hint: check other login nodes with: pgrep -af backup_param"
 fi
 echo
 

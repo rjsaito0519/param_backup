@@ -7,7 +7,7 @@ MARKER="# e72-param-backup"
 
 if crontab -l 2>/dev/null | grep -Fq "$MARKER"; then
   crontab -l | grep -Fv "$MARKER" | crontab -
-  echo "cron removed"
+  echo "cron removed on $(hostname)"
 else
-  echo "cron entry not found"
+  echo "cron entry not found on $(hostname)"
 fi
