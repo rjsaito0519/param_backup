@@ -1,0 +1,10 @@
+# Secrets and local-only files (param_backup public repo)
+.param_backup/.discord_webhook
+.param_backup/*.local
+.param_backup/*.log
+
+# Editor / temp files (aligned with param/.gitignore)
+fieldmap
+*~
+*.sw[op]
+\#*
