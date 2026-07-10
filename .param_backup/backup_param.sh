@@ -7,8 +7,9 @@
 #   3. Put Discord webhook URL in .discord_webhook (one line, optional)
 #   4. Run prepare.sh to stop cron / clear lock on this host
 #   5. Run manually: param/.param_backup/backup_param.sh
-#   6. Enable cron on ONE host only: param/.param_backup/cron_start.sh
-#   7. Check status: param/.param_backup/cron_monitor.sh
+#   6. Push when ready: param/.param_backup/push_backup.sh
+#   7. Enable cron on ONE host only: param/.param_backup/cron_start.sh
+#   8. Check status: param/.param_backup/cron_monitor.sh
 
 set -euo pipefail
 
@@ -207,9 +208,10 @@ do_backup() {
   local commit_summary=""
   local last_commit_hash=""
   local last_commit_summary=""
-  local push_status="not needed"
+  local push_status="not pushed (manual)"
   local push_ok=true
   local run_summary="no changes"
+  local ahead=0
 
   files_changed="$(count_rsync_changes)"
 
@@ -239,24 +241,28 @@ do_backup() {
       committed=true
       commit_hash="$(git rev-parse --short HEAD)"
       commit_summary="$(git show --stat --format='%s' -1 HEAD 2>/dev/null | tail -n +2 | head -5)"
-      run_summary="new commit created"
+      run_summary="new commit created (local only)"
       log "COMMIT: $commit_hash $commit_msg"
-
-      if git push -u origin "$GITHUB_BRANCH" 2>>"$LOG_FILE"; then
-        push_status="pushed to origin/$GITHUB_BRANCH"
-        log "PUSH: success"
-      else
-        push_ok=false
-        push_status="push failed (see log)"
-        log "ERROR: git push failed"
-      fi
     else
       run_summary="no changes to commit"
       log "OK: no changes to commit"
       if git rev-parse --short HEAD >/dev/null 2>&1; then
         last_commit_hash="$(git rev-parse --short HEAD)"
-        last_commit_summary="$(git show --stat --format='%s' -1 HEAD | tail -n +2 | head -5)"
+        last_commit_summary="$(git show --stat --format='%s' -1 HEAD 2>/dev/null | tail -n +2 | head -5)"
       fi
+    fi
+
+    if git rev-parse "origin/$GITHUB_BRANCH" >/dev/null 2>&1; then
+      ahead="$(git rev-list --count "origin/$GITHUB_BRANCH..$GITHUB_BRANCH" 2>/dev/null || echo 0)"
+    elif git rev-parse "$GITHUB_BRANCH" >/dev/null 2>&1; then
+      ahead="$(git rev-list --count "$GITHUB_BRANCH" 2>/dev/null || echo 0)"
+    fi
+
+    if [[ "$ahead" -gt 0 ]]; then
+      push_status="$ahead commit(s) ahead, not pushed (run push_backup.sh)"
+      log "INFO: $ahead commit(s) waiting for manual push"
+    else
+      push_status="up to date with origin/$GITHUB_BRANCH"
     fi
 
     popd >/dev/null
@@ -279,7 +285,7 @@ do_backup() {
     fi
   fi
 
-  if [[ "$sync_ok" == false || "$push_ok" == false ]]; then
+  if [[ "$sync_ok" == false ]]; then
     log "DONE with errors"
     exit 1
   fi

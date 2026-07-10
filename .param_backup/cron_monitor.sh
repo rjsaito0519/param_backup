@@ -20,6 +20,7 @@ STATE_DIR="${STATE_DIR:-$HOME/.config/e72-param-backup}"
 LOG_FILE="${LOG_FILE:-$STATE_DIR/backup.log}"
 LOCK_FILE="${LOCK_FILE:-$STATE_DIR/backup.lock}"
 BACKUP_SCRIPT="${BACKUP_SCRIPT:-$PARAM_SRC/.param_backup/backup_param.sh}"
+PUSH_SCRIPT="${PUSH_SCRIPT:-$PARAM_SRC/.param_backup/push_backup.sh}"
 DISCORD_WEBHOOK_FILE="${DISCORD_WEBHOOK_FILE:-$PARAM_SRC/.param_backup/.discord_webhook}"
 MARKER="# e72-param-backup"
 
@@ -37,6 +38,7 @@ echo
 
 echo "[config]"
 echo "BACKUP_SCRIPT=$BACKUP_SCRIPT"
+echo "PUSH_SCRIPT=$PUSH_SCRIPT"
 echo "PARAM_SRC=$PARAM_SRC"
 echo "PARAM_BACKUP_DEST=$PARAM_BACKUP_DEST"
 echo "GITHUB_REMOTE=$GITHUB_REMOTE"
@@ -78,6 +80,16 @@ if [[ -d "$PARAM_BACKUP_DEST/.git" ]]; then
   echo "branch: $(git -C "$PARAM_BACKUP_DEST" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"
   if git -C "$PARAM_BACKUP_DEST" rev-parse --short HEAD >/dev/null 2>&1; then
     echo "latest commit: $(git -C "$PARAM_BACKUP_DEST" log -1 --oneline)"
+    if git -C "$PARAM_BACKUP_DEST" rev-parse "origin/$GITHUB_BRANCH" >/dev/null 2>&1; then
+      ahead="$(git -C "$PARAM_BACKUP_DEST" rev-list --count "origin/$GITHUB_BRANCH..$GITHUB_BRANCH" 2>/dev/null || echo 0)"
+      if [[ "$ahead" -gt 0 ]]; then
+        echo "push status: $ahead commit(s) ahead (run push_backup.sh)"
+      else
+        echo "push status: up to date with origin/$GITHUB_BRANCH"
+      fi
+    else
+      echo "push status: origin/$GITHUB_BRANCH not fetched yet"
+    fi
   else
     echo "latest commit: none"
   fi

@@ -56,8 +56,12 @@ echo
 echo "2. Test backup once:"
 echo "     $BACKUP_SCRIPT"
 echo
-echo "3. Enable hourly cron on ONE host only:"
+echo "3. Push to GitHub when ready:"
+echo "     $PUSH_SCRIPT"
+echo "     $PUSH_SCRIPT --dry-run"
+echo
+echo "4. Enable hourly cron on ONE host only:"
 echo "     $SCRIPT_DIR/cron_start.sh"
 echo
-echo "4. Monitor:"
+echo "5. Monitor:"
 echo "     $SCRIPT_DIR/cron_monitor.sh"
