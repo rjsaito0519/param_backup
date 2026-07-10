@@ -24,12 +24,58 @@ PUSH_SCRIPT="${PUSH_SCRIPT:-$PARAM_SRC/.param_backup/push_backup.sh}"
 DISCORD_WEBHOOK_FILE="${DISCORD_WEBHOOK_FILE:-$PARAM_SRC/.param_backup/.discord_webhook}"
 MARKER="# e72-param-backup"
 
+if [[ -t 1 ]]; then
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  YELLOW='\033[1;33m'
+  CYAN='\033[0;36m'
+  BOLD='\033[1m'
+  NC='\033[0m'
+else
+  RED=''
+  GREEN=''
+  YELLOW=''
+  CYAN=''
+  BOLD=''
+  NC=''
+fi
+
+color_line() {
+  local color="$1"
+  shift
+  printf '%b%s%b\n' "$color" "$*" "$NC"
+}
+
+is_backup_running() {
+  if pgrep -f '[/]backup_param\.sh' >/dev/null 2>&1; then
+    return 0
+  fi
+  if [[ -f "$LOCK_FILE" ]] && ! flock -n "$LOCK_FILE" true 2>/dev/null; then
+    return 0
+  fi
+  return 1
+}
+
+last_log_event() {
+  if [[ ! -f "$LOG_FILE" ]]; then
+    echo "none"
+    return
+  fi
+  tac "$LOG_FILE" | grep -E 'DONE with errors|ERROR:|SKIP:|DONE$|START:' | head -n 1 || echo "none"
+}
+
 echo "=== e72 param backup monitor ==="
 echo "host: $(hostname)"
 echo
 
+cron_registered=false
+if crontab -l 2>/dev/null | grep -F "$MARKER" >/dev/null; then
+  cron_registered=true
+fi
+
 echo "[cron]"
-if crontab -l 2>/dev/null | grep -F "$MARKER"; then
+if [[ "$cron_registered" == true ]]; then
+  crontab -l 2>/dev/null | grep -F "$MARKER"
   echo "status: registered on $(hostname)"
 else
   echo "status: NOT registered on $(hostname)"
@@ -65,16 +111,19 @@ fi
 echo
 
 echo "[lock]"
+lock_held=false
 if [[ ! -f "$LOCK_FILE" ]]; then
   echo "status: idle (no lock file)"
 elif flock -n "$LOCK_FILE" true 2>/dev/null; then
   echo "status: idle (lock not held)"
 else
+  lock_held=true
   echo "status: LOCKED (backup running on some host)"
   echo "hint: check other login nodes with: pgrep -af backup_param"
 fi
 echo
 
+ahead=0
 echo "[backup destination git]"
 if [[ -d "$PARAM_BACKUP_DEST/.git" ]]; then
   echo "branch: $(git -C "$PARAM_BACKUP_DEST" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"
@@ -104,3 +153,46 @@ if [[ -f "$LOG_FILE" ]]; then
 else
   echo "(no log yet)"
 fi
+
+echo
+echo "=================================================="
+
+backup_running=false
+if is_backup_running; then
+  backup_running=true
+fi
+
+last_event="$(last_log_event)"
+summary_detail=""
+
+if [[ "$backup_running" == true ]]; then
+  if pgrep -af '[/]backup_param\.sh' >/dev/null 2>&1; then
+    summary_detail="backup_param.sh is running on $(hostname)"
+  else
+    summary_detail="lock is held (likely running on another host)"
+  fi
+  color_line "${YELLOW}${BOLD}" ">>> BACKUP: RUNNING <<<  $summary_detail"
+elif [[ "$last_event" == *"DONE with errors"* ]] || [[ "$last_event" == ERROR:* ]]; then
+  summary_detail="last run failed — check log"
+  color_line "${RED}${BOLD}" ">>> BACKUP: IDLE (last run FAILED) <<<  $summary_detail"
+elif [[ "$last_event" == *"SKIP:"* ]]; then
+  summary_detail="last cron run was skipped (lock conflict)"
+  color_line "${YELLOW}${BOLD}" ">>> BACKUP: IDLE (last run SKIPPED) <<<  $summary_detail"
+elif [[ "$cron_registered" == false ]]; then
+  summary_detail="cron not registered on this host"
+  color_line "${YELLOW}${BOLD}" ">>> BACKUP: IDLE (cron OFF on this host) <<<  $summary_detail"
+else
+  summary_detail="not running now"
+  if [[ "$ahead" -gt 0 ]]; then
+    summary_detail="$summary_detail — $ahead commit(s) waiting for push_backup.sh"
+  elif [[ "$last_event" == *"DONE"* ]]; then
+    summary_detail="$summary_detail — last run OK"
+  fi
+  color_line "${GREEN}${BOLD}" ">>> BACKUP: IDLE <<<  $summary_detail"
+fi
+
+if [[ "$lock_held" == true && "$backup_running" == false ]]; then
+  color_line "${RED}${BOLD}" ">>> WARNING: stale lock? <<<  lock held but no process on $(hostname)"
+fi
+
+echo "=================================================="
