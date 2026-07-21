@@ -319,61 +319,61 @@
     <!--BLC1a____________________________________________________________ -->
     <HulMHTdc node_id="1642" name="hulmhtdc-106">
       <for var="ch" from="0" to="31"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="7" ch="ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="0" ch="ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="32" to="63"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="6" ch="63 - ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="1" ch="63 - ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="64" to="95"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="5" ch="ch - 64" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="2" ch="ch - 64" data="data"/></FE>
       </for></for>
       <for var="ch" from="96" to="127"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="4" ch="ch - 96" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="3" ch="ch - 96" data="data"/></FE>
       </for></for>
     </HulMHTdc>
     <!--BLC1a____________________________________________________________ -->
     <HulMHTdc node_id="1643" name="hulmhtdc-107">
       <for var="ch" from="0" to="31"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="3" ch="ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="4" ch="ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="32" to="63"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="2" ch="63 - ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="5" ch="63 - ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="64" to="95"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="1" ch="ch - 64" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="6" ch="ch - 64" data="data"/></FE>
       </for></for>
       <for var="ch" from="96" to="127"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1a" plane="0" ch="ch - 96" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1a" plane="7" ch="ch - 96" data="data"/></FE>
       </for></for>
     </HulMHTdc> 
     <!--BLC1b____________________________________________________________ -->
     <HulMHTdc node_id="1644" name="hulmhtdc-108">
       <for var="ch" from="0" to="31"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="7" ch="ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="0" ch="ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="32" to="63"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="6" ch="63 - ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="1" ch="63 - ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="64" to="95"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="5" ch="ch - 64" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="2" ch="ch - 64" data="data"/></FE>
       </for></for>
       <for var="ch" from="96" to="127"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="4" ch="ch - 96" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="3" ch="ch - 96" data="data"/></FE>
       </for></for>
     </HulMHTdc>
     <!--BLC1b ________________________________________________________________ -->
     <HulMHTdc node_id="1645" name="hulmhtdc-109">
       <for var="ch" from="0" to="31"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="3" ch="ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="4" ch="ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="32" to="63"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="2" ch="63 - ch" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="5" ch="63 - ch" data="data"/></FE>
       </for></for>
       <for var="ch" from="64" to="95"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="1" ch="ch - 64" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="6" ch="ch - 64" data="data"/></FE>
       </for></for>
       <for var="ch" from="96" to="127"><for var="data" from="0" to="2">
-    	<FE ch="ch" data="data"><D Device="BLC1b" plane="0" ch="ch - 96" data="data"/></FE>
+    	<FE ch="ch" data="data"><D Device="BLC1b" plane="7" ch="ch - 96" data="data"/></FE>
       </for></for>
     </HulMHTdc>
     <!--BLC2a ________________________________________________________________ -->
