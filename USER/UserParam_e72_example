@@ -4,6 +4,9 @@
 
 #______________________________________________________________________________
 
+###	Bc tracking diagnostics
+FillPullExclusive	0
+
 ###	TPC
 MinLayerTPC	8
 
