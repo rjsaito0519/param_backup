@@ -92,12 +92,17 @@ dZResScale	1.5
 PhiResScale	1
 
 #______________________________________________________________________________
-# HypTPC dE/dx PID (Sigma from calib snip; Conversion unset = E72 7388.11)
-# See docs/tpc_dedx_pid_userparam.md.
-TpcDedxSigmaKaon  23.1061  -63.6415  54.3826  157.817  -10.8688
-TpcDedxSigmaProton  15.7125  37.1303  -18.6454  195.727  -5.71796
+# HypTPC dE/dx PID (Conversion + Offset + Sigma from calib snip run03781)
+# See docs/tpc_dedx_pid_userparam.md / tpc_dedx_pid_strategy.md.
+TpcDedxConversionFactor  9669.62
+TpcDedxOffsetPion  -10.9032
+TpcDedxOffsetKaon  -12.6992
+TpcDedxOffsetProton  0.0419965
+TpcDedxSigmaPion  6.01755  -8.9876  10.4401  43.5467  -21.3121
+TpcDedxSigmaKaon  5.05484  -2.59836  1.23576  102.87  -7.36555
+TpcDedxSigmaProton  23.084  23.8788  -12.5362  197.083  -6.13561
 
-TpcDedxWindowPion        -3.  2.5.
+TpcDedxWindowPion        -3.  3..
 TpcDedxWindowProton      -1.5  6.
 TpcDedxWindowKaon        -2.  2.
 TpcDedxSepPowerMin       3.
