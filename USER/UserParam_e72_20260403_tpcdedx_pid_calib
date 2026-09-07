@@ -1,5 +1,5 @@
 #
-# UserParam_e72_20260403_kpsc_momscale
+# UserParam_e72_20260403
 #
 
 #______________________________________________________________________________
@@ -153,11 +153,9 @@ Fitter	0	#KalmanFitterRefTrack
 nIteration	5	20
 
 #______________________________________________________________________________
-# DstKpScattering mom-scale diagnostics
-# Copy of UserParam_e72_20260403 for scale scan only (do not edit the original).
-# TPC-only grid by default; comment TPC / uncomment beam to flip the axis.
-KpTpcMomScaleScan	0.97	1.03	0.01
-# KpBeamMomScaleScan	0.97	1.03	0.01
-# Optional single-point overrides for main tree kpsc (default 1.0 if omitted):
-# KpTpcMomScale	1.00
-# KpBeamMomScale	1.00
+# HypTPC dE/dx PID iterative calib (Sigma only; Conversion stays E72 built-in 7388.11)
+# From results/tpc_dedx_pid/tpc_dedx_pid_user_run03781.txt — do not use as production USER.
+# See docs/tpc_dedx_pid_strategy.md iterative loop.
+TpcDedxSigmaPion  6.01463  -8.97707  10.4309  42.3251  -21.1975
+TpcDedxSigmaKaon  23.1061  -63.6415  54.3826  157.817  -10.8688
+TpcDedxSigmaProton  15.7125  37.1303  -18.6454  195.727  -5.71796
