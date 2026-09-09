@@ -91,7 +91,7 @@ MomResScale	1.35
 dZResScale	1.5
 PhiResScale	1
 
-KpBeamCentralMom 0.65
+KpBeamCentralMom 0.735
 
 # #______________________________________________________________________________
 # # HypTPC dE/dx PID (Conversion + Offset + Sigma from calib snip run03781)
