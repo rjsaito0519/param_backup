@@ -145,7 +145,8 @@ Fitter	0	#KalmanFitterRefTrack
 nIteration	5	20
 
 #______________________________________________________________________________
-# DstTPCHelixHTOF: t_beam species / momentum (optional via Has)
-# BeamParticle: 0=pi, 1=K, 2=pbar
+# Beam condition (ResolveBeamCondition, BeamRunCondition.cc): BeamParticle / BeamMom here
+# override the run table for every run using this file.
+# BeamParticle: 0=Pion, 1=Kaon, 2=Proton (also used for pbar: only the mass matters)
 BeamParticle	0
 # BeamMom	0.933

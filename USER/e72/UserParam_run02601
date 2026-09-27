@@ -85,7 +85,61 @@ VFT_DT	-50	200
 MinLayerBcIn	14
 MinLayerBcOut	14
 
-###	Beam for DstTPCHelixHTOF t_beam (BH2 -> vertex); run02601-02607: pion beam, 1.0 GeV/c
-###	(beam_flag ~90% pi, rest unknown; 2026-09-27). BeamParticle: 0=pi, 1=K, 2=pbar
-BeamParticle	0
-BeamMom	1.0
+#______________________________________________________________________________
+### Keys missing here, copied from UserParam_e72_20260403 (the USER of
+### analyzer_e72_dst_tpchelix_example.conf) on 2026-09-28 so that DstTPCHelixTracking etc.
+### run with this file. Keys already present above keep their run02601 values.
+
+#______________________________________________________________________________
+T1_Time	-5	5
+MaxClusterSizeT0	1
+MaxClusterSizeBAC	1
+MaxClusterSizeKVC	1
+MaxClusterSizeT1	1
+MaxClusterSizeSAC3	1
+MaxClusterSizeSFV	1
+MaxClusterSizeCOBO	1
+MaxClusterSizeT2	1
+MaxClusterSizeSCH	1
+MaxClusterSizeT3	1
+MaxTimeDiffT0	-1
+MaxTimeDiffBAC	-1
+MaxTimeDiffKVC	-1
+MaxTimeDiffT1	-1
+MaxTimeDiffSAC3	-1
+MaxTimeDiffSFV	-1
+MaxTimeDiffCOBO	-1
+MaxTimeDiffT2	-1
+MaxTimeDiffSCH	-1
+MaxTimeDiffT3	-1
+
+### TPC
+BeamThroughTPC	0
+ExclusiveTracking	0
+
+### TPC Clustering cut
+MaxYDifClusterTPC	10
+MinClusterDeTPC	90
+MinClusterSizeTPC	1
+MaxClusterYPosTPC	300
+MinClusterYPosTPC	-250
+
+### TPC Hough Window cut
+MaxHoughWindow	10
+MaxHoughWindowY	10
+VertexScanRange	200
+
+### at 1T
+TPC_Dt	0.18
+
+### HIMAC val
+TPC_sigma0	0.204
+
+### TPC Momentum resolution scale
+MomResScale	1.35
+dZResScale	1.5
+PhiResScale	1
+
+#GenFit
+Fitter	0	#KalmanFitterRefTrack
+nIteration	5	20
