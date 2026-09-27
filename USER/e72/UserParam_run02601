@@ -84,3 +84,8 @@ VFT_DT	-50	200
 #	Tracking
 MinLayerBcIn	14
 MinLayerBcOut	14
+
+###	Beam for DstTPCHelixHTOF t_beam (BH2 -> vertex); run02601-02607: pion beam, 1.0 GeV/c
+###	(beam_flag ~90% pi, rest unknown; 2026-09-27). BeamParticle: 0=pi, 1=K, 2=pbar
+BeamParticle	0
+BeamMom	1.0
