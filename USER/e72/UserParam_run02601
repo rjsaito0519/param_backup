@@ -86,9 +86,8 @@ MinLayerBcIn	14
 MinLayerBcOut	14
 
 #______________________________________________________________________________
-### Keys missing here, copied from UserParam_e72_20260403 (the USER of
-### analyzer_e72_dst_tpchelix_example.conf) on 2026-09-28 so that DstTPCHelixTracking etc.
-### run with this file. Keys already present above keep their run02601 values.
+### Keys taken from UserParam_e72_20260403 (USER of analyzer_e72_dst_tpchelix_example.conf)
+### so that DstTPCHelixTracking etc. run with this file; keys above keep their run02601 values.
 
 #______________________________________________________________________________
 T1_Time	-5	5

@@ -143,10 +143,3 @@ Fitter	0	#KalmanFitterRefTrack
 #Fitter 2 #DAF w/ RefTrack
 #Fitter 3 #DAF w/o RefTrack
 nIteration	5	20
-
-#______________________________________________________________________________
-# Beam condition (ResolveBeamCondition, BeamRunCondition.cc): BeamParticle / BeamMom here
-# override the run table for every run using this file.
-# BeamParticle: 0=Pion, 1=Kaon, 2=Proton (also used for pbar: only the mass matters)
-BeamParticle	0
-# BeamMom	0.933
