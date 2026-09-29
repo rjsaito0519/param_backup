@@ -3,19 +3,38 @@
 #
 
 #______________________________________________________________________________
-
-###	TPC
-MinLayerTPC	8
+###	TPC tracking
+MinLayerTPC	5
+BeamThroughTPC	0
 
 ###	TPCHit
 BaselineCorrectionTPC	1
 MaxMultiHitTPC	2000
 MinDeTPC	20
-MinCDeTPC	90
+MinCDeTPC	50
 MinRmsTPC	10
 MinBaseRmsTPC	10
 TimeBucketTPC	15	150
 NumOfTimeBucket	170
+
+###	TPC Clustering
+MaxYDifClusterTPC	10
+MinClusterDeTPC	50
+MinClusterSizeTPC	1
+MinClusterYPosTPC	-2500
+MaxClusterYPosTPC	3000
+
+###	TPC Hough
+MaxHoughWindow	10
+MaxHoughWindowY	10
+
+###	TPC Vertex
+VertexScanRange	100
+
+###	TPC resolution (Helix error scale)
+MomResScale	1.35
+dZResScale	1.5
+PhiResScale	1
 
 #______________________________________________________________________________
 #	HodoTDC	min	max
@@ -87,24 +106,9 @@ MinLayerBcOut	14
 
 # Required by TPCLocalTrackHelix ctor (PidSamples / KpScattering MakeHelix).
 # Same as UserParam_e72_20260403 — slim run USER lacked these and aborted at event 0.
-MomResScale	1.35
-dZResScale	1.5
-PhiResScale	1
 
 KpBeamCentralMom 0.7
 
 # #______________________________________________________________________________
 # # HypTPC dE/dx PID (Conversion + Offset + Sigma from calib snip run03781)
 # # See docs/tpc_dedx_pid_userparam.md / tpc_dedx_pid_strategy.md.
-# TpcDedxConversionFactor  9669.62
-# TpcDedxOffsetPion  -10.9032
-# TpcDedxOffsetKaon  -12.6992
-# TpcDedxOffsetProton  0.0419965
-# TpcDedxSigmaPion  6.01755  -8.9876  10.4401  43.5467  -21.3121
-# TpcDedxSigmaKaon  5.05484  -2.59836  1.23576  102.87  -7.36555
-# TpcDedxSigmaProton  23.084  23.8788  -12.5362  197.083  -6.13561
-
-# TpcDedxWindowPion        -3.  3..
-# TpcDedxWindowProton      -1.5  6.
-# TpcDedxWindowKaon        -2.  2.
-# TpcDedxSepPowerMin       3.

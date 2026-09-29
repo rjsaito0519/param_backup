@@ -3,18 +3,38 @@
 #
 
 #______________________________________________________________________________
-###	TPC
-MinLayerTPC	8
+###	TPC tracking
+MinLayerTPC	5
+BeamThroughTPC	0
 
 ###	TPCHit
 BaselineCorrectionTPC	1
 MaxMultiHitTPC	2000
 MinDeTPC	20
-MinCDeTPC	90
+MinCDeTPC	50
 MinRmsTPC	10
 MinBaseRmsTPC	10
 TimeBucketTPC	15	150
 NumOfTimeBucket	170
+
+###	TPC Clustering
+MaxYDifClusterTPC	10
+MinClusterDeTPC	50
+MinClusterSizeTPC	1
+MinClusterYPosTPC	-2500
+MaxClusterYPosTPC	3000
+
+###	TPC Hough
+MaxHoughWindow	10
+MaxHoughWindowY	10
+
+###	TPC Vertex
+VertexScanRange	100
+
+###	TPC resolution (Helix error scale)
+MomResScale	1.35
+dZResScale	1.5
+PhiResScale	1
 
 #______________________________________________________________________________
 #	HodoTDC	min	max

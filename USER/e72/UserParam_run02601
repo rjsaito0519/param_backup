@@ -3,19 +3,41 @@
 #
 
 #______________________________________________________________________________
-
-###	TPC
-MinLayerTPC	8
+###	TPC tracking
+MinLayerTPC	5
+BeamThroughTPC	0
+ExclusiveTracking	0
 
 ###	TPCHit
 BaselineCorrectionTPC	1
 MaxMultiHitTPC	2000
 MinDeTPC	20
-MinCDeTPC	90
+MinCDeTPC	50
 MinRmsTPC	10
 MinBaseRmsTPC	10
 TimeBucketTPC	15	150
 NumOfTimeBucket	170
+
+###	TPC Clustering
+MaxYDifClusterTPC	10
+MinClusterDeTPC	50
+MinClusterSizeTPC	1
+MinClusterYPosTPC	-2500
+MaxClusterYPosTPC	3000
+
+###	TPC Hough
+MaxHoughWindow	10
+MaxHoughWindowY	10
+
+###	TPC Vertex
+VertexScanRange	100
+
+###	TPC resolution (Helix error scale)
+TPC_Dt	0.18
+TPC_sigma0	0.204
+MomResScale	1.35
+dZResScale	1.5
+PhiResScale	1
 
 #______________________________________________________________________________
 #	HodoTDC	min	max
@@ -86,10 +108,6 @@ MinLayerBcIn	14
 MinLayerBcOut	14
 
 #______________________________________________________________________________
-### Keys taken from UserParam_e72_20260403 (USER of analyzer_e72_dst_tpchelix_example.conf)
-### so that DstTPCHelixTracking etc. run with this file; keys above keep their run02601 values.
-
-#______________________________________________________________________________
 T1_Time	-5	5
 MaxClusterSizeT0	1
 MaxClusterSizeBAC	1
@@ -111,33 +129,6 @@ MaxTimeDiffCOBO	-1
 MaxTimeDiffT2	-1
 MaxTimeDiffSCH	-1
 MaxTimeDiffT3	-1
-
-### TPC
-BeamThroughTPC	0
-ExclusiveTracking	0
-
-### TPC Clustering cut
-MaxYDifClusterTPC	10
-MinClusterDeTPC	90
-MinClusterSizeTPC	1
-MaxClusterYPosTPC	300
-MinClusterYPosTPC	-250
-
-### TPC Hough Window cut
-MaxHoughWindow	10
-MaxHoughWindowY	10
-VertexScanRange	200
-
-### at 1T
-TPC_Dt	0.18
-
-### HIMAC val
-TPC_sigma0	0.204
-
-### TPC Momentum resolution scale
-MomResScale	1.35
-dZResScale	1.5
-PhiResScale	1
 
 #GenFit
 Fitter	0	#KalmanFitterRefTrack
