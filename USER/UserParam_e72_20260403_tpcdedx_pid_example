@@ -167,4 +167,3 @@ TpcDedxSigmaElectronMinus  8.45029
 TpcDedxWindowPion        -3.  3.
 TpcDedxWindowProton      -1.5  6.
 TpcDedxWindowKaon        -2.  2.
-TpcDedxSepPowerMin       3.
