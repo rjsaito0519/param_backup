@@ -107,7 +107,7 @@ MinLayerBcOut	14
 # Required by TPCLocalTrackHelix ctor (PidSamples / KpScattering MakeHelix).
 # Same as UserParam_e72_20260403 — slim run USER lacked these and aborted at event 0.
 
-KpBeamCentralMom	0.7
+KpBeamCentralMom	0.735
 
 # #______________________________________________________________________________
 # # HypTPC dE/dx PID (Conversion + Offset + Sigma from calib snip run03781)
