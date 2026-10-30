@@ -133,3 +133,4 @@ MaxTimeDiffT3	-1
 #GenFit
 Fitter	0	#KalmanFitterRefTrack
 nIteration	5	20
+NoiseOffClusterTPC	1

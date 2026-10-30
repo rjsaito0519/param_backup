@@ -23,6 +23,7 @@ MinClusterDeTPC	50
 MinClusterSizeTPC	1
 MinClusterYPosTPC	-2500
 MaxClusterYPosTPC	3000
+NoiseOffClusterTPC	1	# drop pads in padAbnormalWaveform_E72 (TPCPadHelper.hh)
 
 ###	TPC Hough
 MaxHoughWindow	10

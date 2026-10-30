@@ -151,3 +151,4 @@ Fitter	0	#KalmanFitterRefTrack
 #Fitter 2 #DAF w/ RefTrack
 #Fitter 3 #DAF w/o RefTrack
 nIteration	5	20
+NoiseOffClusterTPC	1

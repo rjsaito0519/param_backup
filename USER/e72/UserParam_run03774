@@ -112,3 +112,4 @@ KpBeamCentralMom	0.735
 # #______________________________________________________________________________
 # # HypTPC dE/dx PID (Conversion + Offset + Sigma from calib snip run03781)
 # # See docs/tpc_dedx_pid_userparam.md / tpc_dedx_pid_strategy.md.
+NoiseOffClusterTPC	1
