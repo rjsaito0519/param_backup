@@ -1,4 +1,10 @@
+# TPCPositionCorrectionMap_e72_0
+# header: n_y  y0  dy   (y nodes = y0 + i*dy, i=0..n_y-1)
+# body:   layer  row  y  vx  vz   (mm; vy unused / zero in map)
+#
 5  -250  100
+# --- data lines below ---
+# layer row y vx vz
 0   0   -250   0   0
 0   0   -150   0   0
 0   0   -50   0   0
