@@ -34,6 +34,8 @@ BACKUP_SCRIPT="${BACKUP_SCRIPT:-$SCRIPT_DIR/backup_param.sh}"
 DISCORD_SYNC_MSG_ID_FILE="${DISCORD_SYNC_MSG_ID_FILE:-$STATE_DIR/discord_sync_message_id}"
 DISCORD_COMMIT_MSG_ID_FILE="${DISCORD_COMMIT_MSG_ID_FILE:-$STATE_DIR/discord_commit_message_id}"
 GITIGNORE_TEMPLATE="${GITIGNORE_TEMPLATE:-$SCRIPT_DIR/backup.gitignore}"
+# Untracked files above this size are kept out of commits (GitHub rejects files > 100 MB).
+LARGE_FILE_LIMIT_MB="${LARGE_FILE_LIMIT_MB:-95}"
 
 mkdir -p "$STATE_DIR" "$PARAM_BACKUP_DEST"
 
@@ -104,6 +106,7 @@ count_rsync_changes() {
     --exclude '.git/' \
     --exclude '.param_backup/.discord_webhook' \
     --exclude 'fieldmap' \
+    --exclude '/FLDMAP/ShsFieldMap_*_TPC[0-9]*' \
     --exclude '*~' \
     --exclude '*.sw[op]' \
     --exclude '#*' \
@@ -123,10 +126,63 @@ do_rsync() {
     --exclude '.git/' \
     --exclude '.param_backup/.discord_webhook' \
     --exclude 'fieldmap' \
+    --exclude '/FLDMAP/ShsFieldMap_*_TPC[0-9]*' \
     --exclude '*~' \
     --exclude '*.sw[op]' \
     --exclude '#*' \
     "$PARAM_SRC/" "$PARAM_BACKUP_DEST/"
+}
+
+# Regenerate an auto-managed block in .git/info/exclude listing untracked files
+# larger than LARGE_FILE_LIMIT_MB, so that a single unexpected large file does not
+# end up in a commit and block every later push. Must be called inside the dest repo.
+# Sets LARGE_SKIPPED (count) and LARGE_SKIPPED_LIST (space separated paths).
+LARGE_SKIPPED=0
+LARGE_SKIPPED_LIST=""
+update_large_file_excludes() {
+  local exclude_file=".git/info/exclude"
+  local begin_marker="# >>> auto: large files skipped by backup_param.sh >>>"
+  local end_marker="# <<< auto: large files skipped by backup_param.sh <<<"
+  local limit_bytes=$((LARGE_FILE_LIMIT_MB * 1024 * 1024))
+
+  mkdir -p .git/info
+  touch "$exclude_file"
+
+  # Drop the previous auto block (the list is rebuilt every run).
+  local tmp
+  tmp="$(mktemp "$STATE_DIR/exclude.XXXXXX")"
+  awk -v b="$begin_marker" -v e="$end_marker" \
+    '$0 == b {skip = 1; next} $0 == e {skip = 0; next} !skip' "$exclude_file" >"$tmp"
+  cat "$tmp" >"$exclude_file"
+  rm -f "$tmp"
+
+  LARGE_SKIPPED=0
+  LARGE_SKIPPED_LIST=""
+  local entries=""
+  local path size
+  while IFS= read -r -d '' path; do
+    path="${path#./}"
+    if git ls-files --error-unmatch -- "$path" >/dev/null 2>&1; then
+      continue  # already tracked: leave it alone
+    fi
+    if git check-ignore -q --no-index -- "$path" 2>/dev/null; then
+      continue  # already ignored by .gitignore
+    fi
+    size="$(stat -c %s -- "$path")"
+    log "WARN: skipped large file (not committed): $path ($((size / 1024 / 1024)) MB > ${LARGE_FILE_LIMIT_MB} MB)"
+    # Escape gitignore glob characters and anchor to the repo root.
+    entries+="/$(printf '%s' "$path" | sed 's/[][*?!#\\]/\\&/g')"$'\n'
+    LARGE_SKIPPED=$((LARGE_SKIPPED + 1))
+    LARGE_SKIPPED_LIST+="${LARGE_SKIPPED_LIST:+ }$path"
+  done < <(find . -path ./.git -prune -o -type f -size +"${limit_bytes}c" -print0)
+
+  if [[ "$LARGE_SKIPPED" -gt 0 ]]; then
+    {
+      echo "$begin_marker"
+      printf '%s' "$entries"
+      echo "$end_marker"
+    } >>"$exclude_file"
+  fi
 }
 
 update_discord_sync() {
@@ -233,6 +289,11 @@ do_backup() {
     fi
 
     pushd "$PARAM_BACKUP_DEST" >/dev/null
+
+    update_large_file_excludes
+    if [[ "$LARGE_SKIPPED" -gt 0 ]]; then
+      sync_status="$sync_status; WARN: $LARGE_SKIPPED large file(s) > ${LARGE_FILE_LIMIT_MB} MB not committed: $LARGE_SKIPPED_LIST"
+    fi
 
     if [[ -n "$(git status --porcelain)" ]]; then
       git add -A

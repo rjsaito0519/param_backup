@@ -8,3 +8,6 @@ fieldmap
 *~
 *.sw[op]
 \#*
+
+# Large generated field maps (exceed GitHub's 100 MB limit; not needed in backup)
+/FLDMAP/ShsFieldMap_*_TPC[0-9]*
