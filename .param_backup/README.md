@@ -11,7 +11,15 @@ param リポジトリの git 管理外。バックアップ先には rsync で�
 ## 仕組み
 
 - 定期実行は cron（毎時 0 分）で、cw01-08 のうち **1 台だけ**に登録する。cron 行のマーカーは `# e72-param-backup`。
-- rsync は `fieldmap`、`.git`、`.param_backup/.discord_webhook`、エディタの一時ファイルを除外する。
+- rsync は `fieldmap`、`/FLDMAP/ShsFieldMap_*_TPC[0-9]*`（生成した大きい磁場マップ）、`.git`、
+  `.param_backup/.discord_webhook`、エディタの一時ファイルを除外する。
+  - バックアップ先の `.gitignore` は rsync で param の `.gitignore` に毎回上書きされるので、
+    バックアップから外したいものは `backup_param.sh` の rsync の `--exclude`（2 か所）に足す。
+- GitHub は 100 MB を超えるファイルを受け付けず、1 つでも commit に入ると以後の push が全部失敗する
+  （2026-10 に TPC0 マップで実際に起きた）。その対策として、commit の前に、まだ git に入っていない
+  `LARGE_FILE_LIMIT_MB`（既定 95）MB 超のファイルをバックアップ先の `.git/info/exclude` の自動ブロックに書き、
+  commit から外す。そのときは log に `WARN: skipped large file ...` と出し、Discord の sync メッセージにも出す。
+  要らないファイルなら rsync の除外に足し、要るなら GitHub 以外の場所に保存する。
 - SRC のブランチが `e72` でなくてもバックアップは実行される（ログに WARN が出るだけ）。
 - 状態ファイル（ログ・lock・Discord メッセージ ID）は `/home/had/sryuta/.config/e72-param-backup/`。
 - 二重起動は `backup.lock` の flock で防いでいる。
