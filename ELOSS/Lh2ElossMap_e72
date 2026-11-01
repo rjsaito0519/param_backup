@@ -7,11 +7,12 @@
 #  p axis = p_TPC1st; L from vtx+dir vs cylinder (TargetRadius, TargetHalfHeight)
 #
 #______________________________________________________________________________
-TargetRadius       40    # mm
-TargetHalfHeight   50    # mm
-TargetCenterX      0    # mm
-TargetCenterY      0    # mm
-TargetCenterZ      -143    # mm
+TargetRadius       40.0    # mm
+TargetHalfHeight   50.0    # mm
+TargetCenterX      0.0     # mm
+TargetCenterY      0.0     # mm
+TargetCenterZ      -143.0  # mm
+VesselRadius       48.5    # mm (required; vacuum vessel window; RegionLoss L=0 outside liquid)
 
 # particle  exit  p          L         Loss
 0  0  100.000000  0.000000  116.292827
