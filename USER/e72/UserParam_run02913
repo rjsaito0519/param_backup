@@ -100,3 +100,4 @@ VFT_DT	-50	200
 #	Tracking
 MinLayerBcIn	14
 MinLayerBcOut	14
+NoiseOffClusterTPC	1

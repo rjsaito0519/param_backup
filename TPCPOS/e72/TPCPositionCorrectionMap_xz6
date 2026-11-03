@@ -1,4 +1,4 @@
-# TPCPositionCorrectionMap_e72_1
+# TPCPositionCorrectionMap_xz6
 # header: n_y  y0  dy   (y nodes = y0 + i*dy, i=0..n_y-1)
 # body:   layer  row  y  vx  vz   (mm; vy unused / zero in map)
 #
