@@ -33,7 +33,7 @@ MaxHoughWindow	10
 MaxHoughWindowY	10
 
 ###	TPC Vertex
-VertexScanRange	100
+VertexScanRange	200
 
 ###	TPC resolution (Helix error scale)
 TPC_Dt	0.18
