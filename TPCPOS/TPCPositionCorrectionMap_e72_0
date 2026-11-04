@@ -1,7 +1,6 @@
 # TPCPositionCorrectionMap_e72_0
 # header: n_y  y0  dy   (y nodes = y0 + i*dy, i=0..n_y-1)
 # body:   layer  row  y  vx  vz   (mm; vy unused / zero in map)
-# xz map from beam-through residuals plus a tangential shift d_t = 6.75e-6 * R^2 (R: pad radius [mm])
 #
 5  -250  100
 0   0   -250   -0.001465402334   9.60516739e-05
