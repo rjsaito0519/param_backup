@@ -1,11 +1,15 @@
 #
-#	UserParam_e72_example
+# UserParam_e72
 #
+
+#______________________________________________________________________________
+# Hodo TDC	min	max
 
 #______________________________________________________________________________
 ###	TPC tracking
 MinLayerTPC	5
 BeamThroughTPC	0
+ExclusiveTracking	0
 
 ###	TPCHit
 BaselineCorrectionTPC	1
@@ -32,46 +36,60 @@ MaxHoughWindowY	10
 VertexScanRange	200
 
 ###	TPC resolution (Helix error scale)
+TPC_Dt	0.18
+TPC_sigma0	0.204
 MomResScale	1.35
 dZResScale	1.5
 PhiResScale	1
 
-#______________________________________________________________________________
-#	HodoTDC	min	max
-BHT_TDC	1414035	1441362
-BHT_TDC_Pi	1414035	1426105
-BHT_TDC_K	1426105	1441362
+BHT_TDC	1409427	1433666
+BHT_TDC_Pi	1409427	1422244
+BHT_TDC_K	1422244	1433666
 T0_TDC	1200000	1250000
-BH2_TDC	717959	730553
-BAC_TDC	700066	718849
-HTOF_TDC	690754	723053
-KVC_TDC	678342	702741
-T1_TDC	692778	705327
+BH2_TDC	717915	731245
+BAC_TDC	696926	720718
+HTOF_TDC	700257	723929
+KVC_TDC	679844	703212
+T1_TDC	694384	706115
 CVC_TDC	1000000	2000000
 SAC3_TDC	300000	700000
 SFV_TDC	1000000	2000000
 COBO_TDC	1500000	1650000
 
 #______________________________________________________________________________
-#	HodoAna
+# HodoAna
 BHT_Time	-15	5
 T0_Time	-5	5
+T1_Time	-5	5
 CVC_Time	-5	25
 CVC_TimeDiff	-1	1
 BTOF	-15	5
 FTOF	-5	25
-
 MaxClusterSizeBHT	2
+MaxClusterSizeT0	1
 MaxClusterSizeBH2	1
+MaxClusterSizeBAC	1
 MaxClusterSizeHTOF	1
+MaxClusterSizeKVC	1
+MaxClusterSizeT1	1
 MaxClusterSizeCVC	1
+MaxClusterSizeSAC3	1
+MaxClusterSizeSFV	1
+MaxClusterSizeCOBO	1
 MaxTimeDiffBHT	10
+MaxTimeDiffT0	-1
 MaxTimeDiffBH2	-1
+MaxTimeDiffBAC	-1
 MaxTimeDiffHTOF	-1
+MaxTimeDiffKVC	-1
+MaxTimeDiffT1	-1
 MaxTimeDiffCVC	-1
+MaxTimeDiffSAC3	-1
+MaxTimeDiffSFV	-1
+MaxTimeDiffCOBO	-1
 
 #______________________________________________________________________________
-#	DCTDC	min	max
+# DC TDC	min	max
 BLC1a_TDC	1000	1500
 BLC1b_TDC	1000	1500
 BLC2a_TDC	1000	1500
@@ -79,7 +97,7 @@ BLC2b_TDC	1000	1500
 BPC1_TDC	1000	1500
 BPC2_TDC	1000	1500
 
-#	DCTOT	min	max	(channel)
+# DC TOT	min	max	(channel)
 BLC1a_TOT	60	2000
 BLC1b_TOT	60	2000
 BLC2a_TOT	60	2000
@@ -88,7 +106,7 @@ BPC1_TOT	100	2000
 BPC2_TOT	40	2000
 VFT_TOT	10	2000
 
-#	DriftTime	min	max	(ns)
+# DriftTime	min	max (ns)
 BLC1a_DT	-50	400
 BLC1b_DT	-50	250
 BLC2a_DT	-50	250
@@ -97,7 +115,31 @@ BPC1_DT	-50	150
 BPC2_DT	-50	200
 VFT_DT	-50	200
 
-#	Tracking
+# Tracking
 MinLayerBcIn	14
 MinLayerBcOut	14
+
+#______________________________________________________________________________
+#MinLayerTPC 6 #E42 ref
+#BeamThroughTPC 	1
+
+#BaselineCorrectionTPC	0
+#MinDeTPC		60
+#MinCDeTPC		60
+#TimeBucketTPC		10 140 # before change num of tbi
+#NumOfTimeBucket	140 # before change num of tbi (E42)
+
+#MaxYDifClusterTPC 3
+#MinClusterDeTPC 60
+
+#MaxHoughWindowY 30
+
+#VertexScanRange 50
+
+#GenFit
+Fitter	0	#KalmanFitterRefTrack
+#Fitter 1 #KalmanFitter
+#Fitter 2 #DAF w/ RefTrack
+#Fitter 3 #DAF w/o RefTrack
+nIteration	5	20
 NoiseOffClusterTPC	1
