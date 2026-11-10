@@ -23,6 +23,7 @@ MinClusterDeTPC	50
 MinClusterSizeTPC	1
 MinClusterYPosTPC	-2500
 MaxClusterYPosTPC	3000
+NoiseOffClusterTPC	1
 
 ###	TPC Hough
 MaxHoughWindow	10
@@ -103,13 +104,3 @@ VFT_DT	-50	200
 #	Tracking
 MinLayerBcIn	14
 MinLayerBcOut	14
-
-# Required by TPCLocalTrackHelix ctor (PidSamples / KpScattering MakeHelix).
-# Same as UserParam_e72_20260403 — slim run USER lacked these and aborted at event 0.
-
-KpBeamCentralMom	0.735
-
-# #______________________________________________________________________________
-# # HypTPC dE/dx PID (Conversion + Offset + Sigma from calib snip run03781)
-# # See docs/tpc_dedx_pid_userparam.md / tpc_dedx_pid_strategy.md.
-NoiseOffClusterTPC	1

@@ -23,6 +23,7 @@ MinClusterDeTPC	50
 MinClusterSizeTPC	1
 MinClusterYPosTPC	-2500
 MaxClusterYPosTPC	3000
+NoiseOffClusterTPC	1
 
 ###	TPC Hough
 MaxHoughWindow	10
@@ -100,4 +101,3 @@ VFT_DT	-50	200
 #	Tracking
 MinLayerBcIn	14
 MinLayerBcOut	14
-NoiseOffClusterTPC	1
